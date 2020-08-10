@@ -3,24 +3,33 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>{% block title %}Auctions{% endblock %}</title>
+        <title>{% block title %}HG Auctions{% endblock %}</title>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
         <link href="{% static 'auctions/styles.css' %}" rel="stylesheet">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ultra">
+        
     </head>
     <body>
-        <h1>Auctions</h1>
-        <div>
-            {% if user.is_authenticated %}
-                Signed in as <strong>{{ user.username }}</strong>.
-            {% else %}
-                Not signed in.
-            {% endif %}
-        </div>
-        <ul class="nav">
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'index' %}">Active Listings</a>
+        <nav class="navbar navbar-expand-lg navbar-light" style="background-color:#4CD4CB;">
+            <img src="{% static 'auctions/HG-logo.png' %}" width="60" height="60" alt="">
+            <a class="navbar-brand" href="#" style="font-family: 'Ultra', serif;">Auctions </a>
+            
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+        
+              
+        <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
+            <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="{% url 'index' %}">Active Listings <span class="sr-only">(current)</span></a>
             </li>
-            {% if user.is_authenticated %}
+            </ul>
+        <hr>
+        </div>
+        <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+            <ul class="navbar-nav ml-auto">
+                {% if user.is_authenticated %}
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
                 </li>
@@ -32,9 +41,27 @@
                     <a class="nav-link" href="{% url 'register' %}">Register</a>
                 </li>
             {% endif %}
-        </ul>
-        <hr>
+            </ul>
+        </div>
+        </nav>
         {% block body %}
         {% endblock %}
+        <footer class="footer">
+            <div class="container">
+                <div>
+                    {% if user.is_authenticated %}
+                        <div class="alert alert-success" role="alert">
+                        Signed in as <strong>{{ user.username }}</strong>.
+                        </div>
+                    {% else %}
+                    <div class="alert alert-danger" role="alert">
+                        Not signed in.
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+          </footer>
     </body>
+    
+    
 </html>
