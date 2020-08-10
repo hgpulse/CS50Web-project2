@@ -7,12 +7,14 @@
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
         <link href="{% static 'auctions/styles.css' %}" rel="stylesheet">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ultra">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Pacifico">
         
     </head>
     <body>
         <nav class="navbar navbar-expand-lg navbar-light" style="background-color:#4CD4CB;">
-            <img src="{% static 'auctions/HG-logo.png' %}" width="60" height="60" alt="">
-            <a class="navbar-brand" href="#" style="font-family: 'Ultra', serif;">Auctions </a>
+            <img src="{% static 'auctions/HG-logo.png' %}" width="120" height="120" alt="">
+            <a class="navbar-brand" href="#" style="font-family: 'Ultra', serif;font-weight: 1000;">Auctions </a>
             
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -20,15 +22,17 @@
         
               
         <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
-            <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-                <a class="nav-link" href="{% url 'index' %}">Active Listings <span class="sr-only">(current)</span></a>
-            </li>
-            </ul>
+            
+                <ul class="navbar-nav mr-auto" style="font-family: 'Roboto'; font-style: Italic; font-weight: 1000;">
+                <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'index' %}">Active Listings <span class="sr-only">(current)</span></a>
+                </li>
+                </ul>
         <hr>
         </div>
         <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
-            <ul class="navbar-nav ml-auto">
+           
+            <ul class="navbar-nav ml-auto" id="right-links" style="font-family: 'Ultra'; font-style: light-italic; font-weight: 50;">
                 {% if user.is_authenticated %}
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
@@ -47,7 +51,7 @@
         {% block body %}
         {% endblock %}
         <footer class="footer">
-            <div class="container">
+            <div class="container" style="font-family: 'Ultra'; font-style: light-italic; font-weight: 50;">
                 <div>
                     {% if user.is_authenticated %}
                         <div class="alert alert-success" role="alert">
