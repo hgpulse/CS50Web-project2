@@ -1,6 +1,56 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-
+import os
+from django.conf import settings
+from django.utils.translation import ugettext_lazy as _
 
 class User(AbstractUser):
     pass
+
+# get the file path for Listing model https://docs.djangoproject.com/en/3.0/ref/models/fields/
+def images_path():
+    return os.path.join(settings.LOCAL_FILE_DIR, 'images')
+
+
+
+class Listing(models.Model):
+    INACTIVE = 0
+    ACTIVE = 1
+    STATUS = (
+        (INACTIVE, _('Inactive')),
+        (ACTIVE, _('Active')),
+    )
+    CAT_TYPE = (
+        ('Gold', 'Brand New'),
+        ('Silver', 'Used with love'),
+        ('Bronze', 'Used with love for a longtime'),
+    )
+    name = models.CharField(max_length=50)
+    initial_price = models.IntegerField()
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    category = models.CharField(max_length=64, choices=CAT_TYPE)
+    description = models.CharField(max_length=100)
+    date = models.DateField()
+    file = models.FilePathField(path=images_path)
+    active = models.IntegerField(default=0, choices=STATUS)
+
+    def __str__(self):
+        return f"{self.name} from  {self.owner} at {self.date}"
+
+class Bid(models.Model):
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    price = models.CharField(max_length=100)
+    date = models.DateField()
+
+    def __str__(self):
+        return f"{self.owner} for {self.price} at {self.date}"
+
+class Comment(models.Model):
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    title = models.CharField(max_length=32)
+    content = models.CharField(max_length=100)
+    date = models.DateField()
+
+    def __str__(self):
+        return f"{self.owner} write  {self.title} on the {self.date}"
+
