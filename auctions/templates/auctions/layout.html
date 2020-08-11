@@ -36,7 +36,7 @@
             <ul class="navbar-nav mr-auto" style="font-family: 'Ultra'; font-style: light-Italic; font-weight: 50; font-size: 5px;">
             {% if user.is_authenticated %}
                 <li class="nav-item">
-                    <a href="{% url 'logout' %}" class="btn btn-secondary active" role="button" aria-pressed="true">New Listing</a>
+                    <a href="{% url 'newlisting' %}" class="btn btn-secondary active" role="button" aria-pressed="true">New Listing</a>
                 </li>
             {% endif %}
             </ul>

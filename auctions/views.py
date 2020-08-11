@@ -4,8 +4,11 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
-from .models import User
+from .models import User, Listing
+from django.shortcuts import render
+from .forms import ListingForm
 
+from django.contrib.auth.decorators import login_required
 
 def index(request):
     return render(request, "auctions/index.html")
@@ -61,3 +64,22 @@ def register(request):
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "auctions/register.html")
+
+@login_required
+def newlisting(request):
+    """Process images uploaded by users"""
+    if request.method == 'POST':
+        form = ListingForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            # Get the current instance object to display in the template
+            img_obj = form.instance
+            print(img_obj)
+            return render(request, 'auctions/new_listing.html', {'form': form, 'img_obj': img_obj})
+            
+
+
+    else:
+        
+        form = ListingForm()
+    return render(request, 'auctions/new_listing.html', {'form': form})
