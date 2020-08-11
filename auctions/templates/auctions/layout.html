@@ -28,12 +28,25 @@
                     <a class="nav-link" href="{% url 'index' %}">Active Listings <span class="sr-only">(current)</span></a>
                 </li>
                 </ul>
-        <hr>
+        
         </div>
+        
+        <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
+            
+            <ul class="navbar-nav mr-auto" style="font-family: 'Ultra'; font-style: light-Italic; font-weight: 50; font-size: 5px;">
+            {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a href="{% url 'logout' %}" class="btn btn-secondary active" role="button" aria-pressed="true">New Listing</a>
+                </li>
+            {% endif %}
+            </ul>
+    
+        </div>
+
         <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
            
             <ul class="navbar-nav ml-auto" id="right-links" style="font-family: 'Ultra'; font-style: light-italic; font-weight: 50;">
-                {% if user.is_authenticated %}
+            {% if user.is_authenticated %}
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
                 </li>
@@ -48,6 +61,7 @@
             </ul>
         </div>
         </nav>
+        
         {% block body %}
         {% endblock %}
         <footer class="footer">

@@ -1,15 +1,13 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-import os
+
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 
 class User(AbstractUser):
     pass
 
-# get the file path for Listing model https://docs.djangoproject.com/en/3.0/ref/models/fields/
-def images_path():
-    return os.path.join(settings.LOCAL_FILE_DIR, 'images')
+
 
 
 
@@ -31,8 +29,8 @@ class Listing(models.Model):
     category = models.CharField(max_length=64, choices=CAT_TYPE)
     description = models.CharField(max_length=100)
     date = models.DateField()
-    file = models.FilePathField(path=images_path)
     active = models.IntegerField(default=0, choices=STATUS)
+    image = models.ImageField(upload_to='images', blank=True)
 
     def __str__(self):
         return f"{self.name} from  {self.owner} at {self.date}"

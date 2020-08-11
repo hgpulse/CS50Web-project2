@@ -22,7 +22,6 @@ class Migration(migrations.Migration):
                 ('category', models.CharField(choices=[('Gold', 'Brand New'), ('Silver', 'Used with love'), ('Bronze', 'Used with love for a longtime')], max_length=64)),
                 ('description', models.CharField(max_length=100)),
                 ('date', models.DateField()),
-                ('file', models.FilePathField(path=auctions.models.images_path)),
                 ('active', models.IntegerField(choices=[(0, 'Inactive'), (1, 'Active')], default=0)),
                 ('owner', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
