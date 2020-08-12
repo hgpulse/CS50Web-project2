@@ -69,7 +69,9 @@ def register(request):
 def newlisting(request):
     """Process images uploaded by users"""
     if request.method == 'POST':
+       
         form = ListingForm(request.POST, request.FILES)
+        print(form)
         if form.is_valid():
             form.save()
             # Get the current instance object to display in the template

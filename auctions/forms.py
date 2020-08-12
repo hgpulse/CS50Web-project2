@@ -1,8 +1,8 @@
-from django import forms
+from django.forms import ModelForm
 from .models import Listing
+from django import forms
 
-class ListingForm(forms.ModelForm):
-    
+class ListingForm(ModelForm):
     class Meta:
         model = Listing
-        fields = ('name', 'description','date', 'image', 'initial_price', 'category', 'active','owner')
+        fields = ('__all__')

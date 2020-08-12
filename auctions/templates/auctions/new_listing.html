@@ -4,7 +4,7 @@
 <div class="form-group">
 <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
-     {{ form.as_p }}
+     {{ form }}
     <button type="submit">Save</button>
   </form>
   

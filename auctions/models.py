@@ -14,23 +14,26 @@ class User(AbstractUser):
 class Listing(models.Model):
     INACTIVE = 0
     ACTIVE = 1
+
     STATUS = (
         (INACTIVE, _('Inactive')),
         (ACTIVE, _('Active')),
     )
     CAT_TYPE = (
+        ('None', 'None'),
         ('Gold', 'Brand New'),
         ('Silver', 'Used with love'),
         ('Bronze', 'Used with love for a longtime'),
+        
     )
     name = models.CharField(max_length=50)
     initial_price = models.IntegerField()
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
-    category = models.CharField(max_length=64, choices=CAT_TYPE)
+    category = models.CharField(max_length=64, choices=CAT_TYPE, default=CAT_TYPE[0][0], blank=True, null=True)
     description = models.CharField(max_length=100)
     date = models.DateField()
     active = models.IntegerField(default=0, choices=STATUS)
-    image = models.ImageField(upload_to='images', blank=True, null=True)
+    image = models.ImageField(upload_to='images', default='images/jump_kitefoil.png', blank=True, null=True)
 
     def __str__(self):
         return f"{self.name} from  {self.owner} at {self.date}"
