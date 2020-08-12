@@ -33,7 +33,7 @@ class Listing(models.Model):
     description = models.CharField(max_length=100)
     date = models.DateField()
     active = models.IntegerField(default=0, choices=STATUS)
-    image = models.ImageField(upload_to='images', default='images/jump_kitefoil.png', blank=True, null=True)
+    image = models.ImageField(upload_to='images', default='images', blank=True, null=True)
 
     def __str__(self):
         return f"{self.name} from  {self.owner} at {self.date}"
