@@ -71,7 +71,7 @@ def newlisting(request):
     if request.method == 'POST':
        
         form = ListingForm(request.POST, request.FILES)
-        print(form)
+        
         if form.is_valid():
             form.save()
             # Get the current instance object to display in the template
@@ -79,8 +79,6 @@ def newlisting(request):
             print(img_obj)
             return render(request, 'auctions/new_listing.html', {'form': form, 'img_obj': img_obj})
             
-
-
     else:
         
         form = ListingForm()

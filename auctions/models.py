@@ -7,10 +7,6 @@ from django.utils.translation import ugettext_lazy as _
 class User(AbstractUser):
     pass
 
-
-
-
-
 class Listing(models.Model):
     INACTIVE = 0
     ACTIVE = 1
@@ -28,30 +24,31 @@ class Listing(models.Model):
     )
     name = models.CharField(max_length=50)
     initial_price = models.IntegerField()
-    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    # can get via sessions ID
+    #owner = models.ForeignKey(User, on_delete=models.CASCADE)
     category = models.CharField(max_length=64, choices=CAT_TYPE, default=CAT_TYPE[0][0], blank=True, null=True)
     description = models.CharField(max_length=100)
     date = models.DateField()
-    active = models.IntegerField(default=0, choices=STATUS)
+    active = models.IntegerField(default=1, choices=STATUS)
     image = models.ImageField(upload_to='images', default='images', blank=True, null=True)
 
     def __str__(self):
-        return f"{self.name} from  {self.owner} at {self.date}"
+        return f"{self.name} at {self.date}"
 
 class Bid(models.Model):
-    owner = models.ForeignKey(User, on_delete=models.CASCADE)
-    price = models.CharField(max_length=100)
+    # owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    price = models.ForeignKey(Listing , on_delete=models.CASCADE)
     date = models.DateField()
 
     def __str__(self):
-        return f"{self.owner} for {self.price} at {self.date}"
+        return f"{self.price} at {self.date}"
 
 class Comment(models.Model):
-    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    # owner = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=32)
     content = models.CharField(max_length=100)
     date = models.DateField()
 
     def __str__(self):
-        return f"{self.owner} write  {self.title} on the {self.date}"
+        return f" {self.title} on the {self.date}"
 
