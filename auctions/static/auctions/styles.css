@@ -1,5 +1,50 @@
 body {
     padding: 10px;
-    background-color: lightblue;
+    font-family: 'Ultra'; 
+    font-style: light-Italic; 
+    font-weight: 50; 
+    font-size: 15px;
 }
 
+
+
+button {
+    margin: 0px;
+    position: absolute;
+    top: 60%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+  }
+  
+  footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color:white;
+    color: white;
+    text-align: center;
+  }
+  .center {
+    margin: auto;
+    width: 50%;
+    padding: 20px;
+  }
+.center-inside {
+    text-align:center;
+    padding:2px;
+    margin:0 auto;
+}
+
+.center-form-create {
+    text-align:center;
+    padding:20px;
+}
+
+.left-inside {
+  text-align:left;
+  padding:2px;
+  margin:0 auto;
+  border: 3px solid #4CD4CB; 
+}

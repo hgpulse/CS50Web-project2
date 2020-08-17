@@ -7,3 +7,6 @@ class ListingForm(ModelForm):
         model = Listing
         fields = ('__all__')
 
+
+
+

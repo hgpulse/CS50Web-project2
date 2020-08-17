@@ -11,7 +11,8 @@ from .forms import ListingForm
 from django.contrib.auth.decorators import login_required
 
 def index(request):
-    return render(request, "auctions/index.html")
+    all_entries = Listing.objects.all()
+    return render(request, "auctions/index.html", {'all_entries': all_entries} )
 
 
 def login_view(request):
