@@ -94,14 +94,30 @@ def newlisting(request):
     return render(request, 'auctions/new_listing.html', {'form': form})
 
 def listingpage(request, name):
-    print(name)
-    #query listing.name to get detail
     
-    all_entries = Listing.objects.all()
+    #query listing.name to get detail
+    listing = Listing(name=name)
+    # get description
+    listdescr = listing.description
+    print(listing)
+    # get price
+    listingprice = listing.initial_price
+    # get cat
+    listingcat = listing.category
+    # get image
+    listingimage = listing.image
+    imageurl = listingimage.url
+    # get date 
+    listingdate = listing.date
     # path = settings.MEDIA_ROOT
     # img_list = os.listdir(path + '/images')
     # context = {'images' : img_list}
     return render(request, "auctions/listing_page.html", {
-        'all_entries': all_entries,
-        'name': name
+        'name': name,
+        'listing': listing,
+        # 'description': listdescr,
+        # 'price': listingprice,
+        # 'category': listingcat ,
+        # 'image': imageurl,
+        # 'date': listingdate,
         })
