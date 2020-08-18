@@ -10,8 +10,16 @@ from .forms import ListingForm
 
 from django.contrib.auth.decorators import login_required
 
+# URL for MEDIA image
+
+# import os
+# from django.conf import settings
+
 def index(request):
     all_entries = Listing.objects.all()
+    # path = settings.MEDIA_ROOT
+    # img_list = os.listdir(path + '/images')
+    # context = {'images' : img_list}
     return render(request, "auctions/index.html", {'all_entries': all_entries} )
 
 
@@ -84,3 +92,16 @@ def newlisting(request):
         
         form = ListingForm()
     return render(request, 'auctions/new_listing.html', {'form': form})
+
+def listingpage(request, name):
+    print(name)
+    #query listing.name to get detail
+    
+    all_entries = Listing.objects.all()
+    # path = settings.MEDIA_ROOT
+    # img_list = os.listdir(path + '/images')
+    # context = {'images' : img_list}
+    return render(request, "auctions/listing_page.html", {
+        'all_entries': all_entries,
+        'name': name
+        })

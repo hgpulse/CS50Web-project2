@@ -1,6 +1,7 @@
 from django.urls import path
-
 from . import views
+from django.conf.urls.static import static
+from django.conf import settings
 
 urlpatterns = [
     path("", views.index, name="index"),
@@ -8,5 +9,6 @@ urlpatterns = [
     path("logout", views.logout_view, name="logout"),
     path("register", views.register, name="register"),
     path("new-listing", views.newlisting, name="newlisting"),
-    path("active-listing", views.index, name="index")
-]
+    path("active-listing", views.index, name="index"),
+    path("<str:name>/listing-page", views.listingpage, name="listingpage")
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

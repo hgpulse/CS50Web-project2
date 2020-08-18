@@ -11,12 +11,15 @@
 
 <form class="form-horizontal" method="post" enctype="multipart/form-data">
     {% csrf_token %}
+    <h1>Create a New Listing</h1>
+
+    
     {{ form.non_field_errors }}
     
     <div class="form-group"></div>
       <div class="fieldWrapper">
           {{ form.name.errors }}
-          <label class="control-label col-sm-2" for="{{ form.name.title }}">Title subject:</label>
+          
           {{ form.name }}
       </div>
   
@@ -24,7 +27,7 @@
   <div class="form-group"></div>
       <div class="fieldWrapper">
           {{ form.description.errors }}
-          <label class="control-label col-sm-2" for="{{ form.description.description }}">Listing description:</label>
+          
           {{ form.description }}
       </div>
   
@@ -32,7 +35,7 @@
   <div class="form-group"></div>
     <div class="fieldWrapper">
       {{ form.initial_price.errors }}
-      <label class="control-label col-sm-2" for="{{ form.initial_price.i_price }}">Initial Price:</label>
+      
       {{ form.initial_price }}
     </div>
 
@@ -40,7 +43,6 @@
 <div class="form-group"></div>
     <div class="fieldWrapper">
         {{ form.category.errors }}
-        <label class="control-label col-sm-2" for="{{ form.categoryle.cat }}">Category:</label>
         {{ form.category }}
     </div>
 
@@ -48,7 +50,7 @@
 <div class="form-group"></div>
     <div class="fieldWrapper">
         {{ form.date.errors }}
-        <label class="control-label col-sm-2" for="{{ form.date.date }}">Date :</label>
+        
         {{ form.date }}
     </div>
 
@@ -56,7 +58,7 @@
 <div class="form-group"></div>
     <div class="fieldWrapper">
         {{ form.image.errors }}
-        <label class="control-label col-sm-2" for="{{ form.image.image }}">Image:</label>
+       
         {{ form.image }}
     </div>
 
@@ -64,7 +66,7 @@
 <div class="form-group"></div>
     <div class="fieldWrapper">
         {{ form.active.errors }}
-        <label class="control-label col-sm-2" for="{{ form.active.active }}">Listing Status:</label>
+       
         {{ form.active }}
     </div>
 

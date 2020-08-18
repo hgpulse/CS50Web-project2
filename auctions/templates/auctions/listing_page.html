@@ -1,20 +1,20 @@
 {% extends "auctions/layout.html" %}
 {% block body %}
 {% load static %}
-<h1>Active Listing</h1>
+<h1> {{ name }}</h1>
 <div class="center">
     <div class="left-inside">
 <ul>
     {% for listing in all_entries %}
         {% if listing.active == 1 %}
-        <a  href="{% url 'listingpage' name=listing.name %}">
+        <a  href="https://www.w3schools.com">
         <h1>{{ listing.name }}</h1>
-     
+        
         <div class="row" >
              
             
             <div class="col-xs-9 col-md-7">
-                <img src="media/images/Screenshot_2020-08-07_at_10.50.43.png" width="500" height="200" alt="{{ listing.name }}">
+                <img src="{{ MEDIA_URL }}images/{{ Listing.image }}" width="200" height="200" alt="{{ listing.name }}">
             </div>
             <div class="col-xs-3 col-md-5">
                 {{ listing.description }}

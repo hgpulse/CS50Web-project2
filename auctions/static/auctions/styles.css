@@ -5,18 +5,7 @@ body {
     font-weight: 50; 
     font-size: 15px;
 }
-
-
-
-button {
-    margin: 0px;
-    position: absolute;
-    top: 60%;
-    left: 50%;
-    -ms-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%);
-  }
-  
+ 
   footer {
     position: fixed;
     left: 0;
@@ -26,25 +15,41 @@ button {
     color: white;
     text-align: center;
   }
-  .center {
+  .center,h1 {
     margin: auto;
     width: 50%;
     padding: 20px;
   }
-.center-inside {
+.center-inside,h1 {
     text-align:center;
-    padding:2px;
+    padding:5px;
     margin:0 auto;
 }
 
 .center-form-create {
     text-align:center;
-    padding:20px;
+    padding:10px;
 }
 
-.left-inside {
-  text-align:left;
-  padding:2px;
-  margin:0 auto;
+.left-inside, .row {
+  text-align: center;
+  padding: 5px;
+  margin: 0 auto;
   border: 3px solid #4CD4CB; 
 }
+
+.row:hover {
+  background-color:  #4CD4CB;
+}
+
+a:link {
+  text-decoration: none;
+  color: black;
+}
+
+a:visited {
+  text-decoration: none;
+  color: black;
+}
+
+

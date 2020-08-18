@@ -4,6 +4,8 @@ from django.db import models
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 
+
+
 class User(AbstractUser):
     pass
 
@@ -41,7 +43,7 @@ class Bid(models.Model):
     date = models.DateField()
 
     def __str__(self):
-        return f"{self.price} at {self.date}"
+        return f"{self.price} on the {self.date}"
 
 class Comment(models.Model):
     # owner = models.ForeignKey(User, on_delete=models.CASCADE)
