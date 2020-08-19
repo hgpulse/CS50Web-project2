@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from auctions.views import listingpage
 from django.conf.urls.static import static
 from django.conf import settings
 
@@ -10,5 +11,5 @@ urlpatterns = [
     path("register", views.register, name="register"),
     path("new-listing", views.newlisting, name="newlisting"),
     path("active-listing", views.index, name="index"),
-    path("<str:name>/listing-page", views.listingpage, name="listingpage")
+    path("listing-page/<int:pk>/", listingpage.as_view(), name="listingpage"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

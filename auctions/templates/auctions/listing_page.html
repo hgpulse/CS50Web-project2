@@ -4,25 +4,28 @@
 <h1> {{ name }}</h1>
 <div class="center">
     <div class="left-detail">
+
+    
 <ul>
     
         
     
-        <h1>{{ listing.name }}</h1>
+        <h1>{{listing.name}}</h1>
         
         <div class="row-detail" >
              
             
             <div class="col-xs-9 col-md-7">
-                <img src="{{ listing.image }}" width="800" height="600" alt="{{ name }}">
+                <img src="{{listing.image}}" width="800" height="600" alt="{{ name }}">
             </div>
             
             <div class="col-xs-3 col-md-5">
-                {{ listing.description }}
+                {{listing.description}}
             </div>
             
             <div class="col-xs-3 col-md-5">
-                <h3>Price: {{ listing.price }} .- </h3>
+                <h3>Price: {{listing.initial_price}} .-</h3>
+                <p>on the {{listing.date}}</p>
                 
             </div>
           

@@ -10,6 +10,9 @@ from .forms import ListingForm
 
 from django.contrib.auth.decorators import login_required
 
+from django.views.generic import ListView, DetailView
+from django.utils import timezone
+
 # URL for MEDIA image
 
 # import os
@@ -17,10 +20,9 @@ from django.contrib.auth.decorators import login_required
 
 def index(request):
     all_entries = Listing.objects.all()
-    # path = settings.MEDIA_ROOT
-    # img_list = os.listdir(path + '/images')
-    # context = {'images' : img_list}
+
     return render(request, "auctions/index.html", {'all_entries': all_entries} )
+
 
 
 def login_view(request):
@@ -93,31 +95,14 @@ def newlisting(request):
         form = ListingForm()
     return render(request, 'auctions/new_listing.html', {'form': form})
 
-def listingpage(request, name):
-    
-    #query listing.name to get detail
-    listing = Listing(name=name)
-    # get description
-    listdescr = listing.description
-    print(listing)
-    # get price
-    listingprice = listing.initial_price
-    # get cat
-    listingcat = listing.category
-    # get image
-    listingimage = listing.image
-    imageurl = listingimage.url
-    # get date 
-    listingdate = listing.date
-    # path = settings.MEDIA_ROOT
-    # img_list = os.listdir(path + '/images')
-    # context = {'images' : img_list}
-    return render(request, "auctions/listing_page.html", {
-        'name': name,
-        'listing': listing,
-        # 'description': listdescr,
-        # 'price': listingprice,
-        # 'category': listingcat ,
-        # 'image': imageurl,
-        # 'date': listingdate,
-        })
+class listingpage(DetailView):
+    model = Listing
+    context_object_name = 'listing'
+    template_name = 'auctions/listing_page.html'
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super().get_context_data(**kwargs)
+        # Add in a QuerySet of all the books
+        context['user_list'] = User.objects.all()
+        return context

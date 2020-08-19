@@ -7,7 +7,7 @@
 <ul>
     {% for listing in all_entries %}
         {% if listing.active == 1 %}
-        <a  href="{% url 'listingpage' name=listing.name %}">
+        <a  href="{% url 'listingpage' pk=listing.id %}">
         <h1>{{ listing.name }}</h1>
      
         <div class="row" >
