@@ -14,7 +14,9 @@
              
             
             <div class="col-xs-9 col-md-7">
-                <img src="media/images/Screenshot_2020-08-07_at_10.50.43.png" width="500" height="200" alt="{{ listing.name }}">
+                {% if listing.image %}
+                    <img src="{{ listing.image.url }}" width="500" height="200" alt="{{ listing.name }}">
+                {% endif %}
             </div>
             <div class="col-xs-3 col-md-5">
                 {{ listing.description }}
