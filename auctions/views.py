@@ -4,9 +4,9 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
-from .models import User, Listing
+from .models import User, Listing, ListingForm
 from django.shortcuts import render
-from .forms import ListingForm
+
 
 from django.contrib.auth.decorators import login_required
 
