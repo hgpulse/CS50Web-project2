@@ -4,7 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
-from .models import User, Listing, ListingForm
+from .models import User, Listing, ListingForm, WatchForm
 from django.shortcuts import render
 
 
@@ -13,7 +13,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, DetailView
 from django.utils import timezone
 
-# URL for MEDIA image
+
 
 # import os
 # from django.conf import settings
@@ -78,16 +78,28 @@ def register(request):
 
 @login_required
 def newlisting(request):
+    
     """Process images uploaded by users"""
     if request.method == 'POST':
        
-        form = ListingForm(request.POST, request.FILES)
-        
+        form = ListingForm(request.POST, request.FILES, request.user)
+
         if form.is_valid():
-            form.save()
+            instance = form.save(commit=False)
+            instance.user = request.user
+            if not request.user == instance.user:
+                raise Http404
+            instance.save()
+            
+            print("valid")
+            # form.save
+            # store the user instance 
+            
+        
+            #fs.save()
             # Get the current instance object to display in the template
             img_obj = form.instance
-            print(img_obj)
+            
             return render(request, 'auctions/new_listing.html', {'form': form, 'img_obj': img_obj})
             
     else:
@@ -100,9 +112,10 @@ class listingpage(DetailView):
     context_object_name = 'listing'
     template_name = 'auctions/listing_page.html'
 
+    # add the watchlist form
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
         # Add in a QuerySet of all the books
-        context['user_list'] = User.objects.all()
+        context['form'] = WatchForm
         return context

@@ -28,11 +28,27 @@
             
             <div class="col-xs-3 col-md-5">
                 <h3>Price: {{listing.initial_price}} .-</h3>
-                <p>on the {{listing.date}}</p>
+                <p>on the {{listing.date}} by {{listing.user}}</p>
                 
             </div>
           
         </div>
+        <form class="form-horizontal" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <h1>Watchlist</h1>
+        
+            
+            {{ form.non_field_errors }}
+            
+            <div class="form-group"></div>
+              <div class="fieldWrapper">
+                  {{ form.status.errors }}
+                  
+                  {{ form.status }}
+              </div>
+        <form>
+          
+
         {% if user.is_authenticated %}
                         - Add to watch list/remove from watchList
                         - bid item
