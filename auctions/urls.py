@@ -12,4 +12,5 @@ urlpatterns = [
     path("new-listing", views.newlisting, name="newlisting"),
     path("active-listing", views.index, name="index"),
     path("listing-page/<int:pk>/", listingpage.as_view(), name="listingpage"),
+    
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

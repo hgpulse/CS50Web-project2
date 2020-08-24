@@ -10,16 +10,7 @@ from django.forms import ModelForm, SelectDateWidget, TextInput
 class User(AbstractUser):
     pass
 
-class watchlist(models.Model):
-    NO = 0, _('No')
-    YES = 1, _('Yes')
 
-    __empty__ = _('(Unknown)')
-
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, default= 1, on_delete=models.CASCADE)
-
-    status = models.IntegerField(default=0)
-    date = models.DateTimeField(auto_now=True)
 
 class Listing(models.Model):
     INACTIVE = 0
@@ -45,7 +36,7 @@ class Listing(models.Model):
     date = models.DateTimeField(auto_now=True)
     active = models.IntegerField(default=1, choices=STATUS)
     image = models.ImageField(upload_to='images', default='images', blank=True, null=True)
-    # watchlist =  models.ForeignKey(watchlist, default=1, on_delete=models.CASCADE)
+    
 
     def __str__(self):
         return f"{self.name} at {self.date}"
@@ -53,17 +44,34 @@ class Listing(models.Model):
     def __unicode__(self):
         return self.name
 
+class watchlist(models.Model):
+    status = models.BooleanField(default=False)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, default= 1, on_delete=models.CASCADE)
+    date = models.DateTimeField(auto_now=True)
+    listing_list =  models.ForeignKey(Listing, on_delete=models.CASCADE, blank=True, null=True)
+    
+    def __str__(self):
+        return f"{self.status}"
+
+    def __unicode__(self):
+        return self.status
+    
+    def get_absolute_url(self):
+        return reverse('watchlist', kwargs={'pk': self.pk})
 
 class Bid(models.Model):
-    # owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, default= 1, on_delete=models.CASCADE)
     price = models.ForeignKey(Listing , on_delete=models.CASCADE)
     date = models.DateTimeField(auto_now=True)
+
+    def __unicode__(self):
+        return self.price
 
     def __str__(self):
         return f"{self.price} on the {self.date}"
 
 class Comment(models.Model):
-    # owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, default= 1, on_delete=models.CASCADE)
     title = models.CharField(max_length=32)
     content = models.CharField(max_length=100)
     date = models.DateTimeField(auto_now=True)
@@ -71,6 +79,22 @@ class Comment(models.Model):
     def __str__(self):
         return f" {self.title} on the {self.date}"
 
+    def __unicode__(self):
+        return self.title
+
+class ClientAccount(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, default= 1, on_delete=models.CASCADE)
+    created = models.DateTimeField(auto_now=True)
+    watchlist = models.ForeignKey(watchlist, on_delete=models.CASCADE, blank=True, null=True)
+    bid = models.ForeignKey(Bid, on_delete=models.CASCADE, blank=True, null=True)
+    comment = models.ForeignKey(Comment, on_delete=models.CASCADE, blank=True, null=True)
+    listing_own = models.ForeignKey(Listing, on_delete=models.CASCADE, blank=True, null=True)
+
+    def __str__(self):
+        return f" {self.user} created {self.created}"
+    
+    def __unicode__(self):
+        return self.user
 class ListingForm(ModelForm):
 
     class Meta:
@@ -84,10 +108,11 @@ class ListingForm(ModelForm):
             'date': SelectDateWidget()
         }
 
+
 class WatchForm(ModelForm):
 
     class Meta:
         model = watchlist
         fields = ('__all__')
-        exclude =('user', 'date')
+        exclude =('user', 'date','listing_list')
         

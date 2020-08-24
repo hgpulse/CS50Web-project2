@@ -10,7 +10,7 @@ from django.shortcuts import render
 
 from django.contrib.auth.decorators import login_required
 
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, FormView
 from django.utils import timezone
 
 
@@ -107,15 +107,18 @@ def newlisting(request):
         form = ListingForm()
     return render(request, 'auctions/new_listing.html', {'form': form})
 
-class listingpage(DetailView):
+class listingpage(DetailView, FormView):
     model = Listing
     context_object_name = 'listing'
     template_name = 'auctions/listing_page.html'
-
-    # add the watchlist form
-    def get_context_data(self, **kwargs):
-        # Call the base implementation first to get a context
-        context = super().get_context_data(**kwargs)
-        # Add in a QuerySet of all the books
-        context['form'] = WatchForm
-        return context
+    form_class = WatchForm
+    # retrun 
+    def get_success_url(self):
+        return self.request.path
+    
+    def form_valid(self, form):
+        # This method is called when valid form data has been POSTed.
+        # It should return an HttpResponse.
+        
+        return super().form_valid(form)
+    

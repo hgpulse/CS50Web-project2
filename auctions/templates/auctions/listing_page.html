@@ -33,6 +33,7 @@
             </div>
           
         </div>
+        {% if user.is_authenticated %}
         <form class="form-horizontal" method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <h1>Watchlist</h1>
@@ -44,12 +45,14 @@
               <div class="fieldWrapper">
                   {{ form.status.errors }}
                   
-                  {{ form.status }}
+                  {{ form }}
+                  <button type="submit" class="btn btn-success">Add</button>
               </div>
+              
         <form>
           
 
-        {% if user.is_authenticated %}
+        
                         - Add to watch list/remove from watchList
                         - bid item
                         - if owner close auction --> inactive and highest bid winner
