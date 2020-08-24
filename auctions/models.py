@@ -7,6 +7,9 @@ from django.utils.translation import ugettext_lazy as _
 # modelsForm
 from django.forms import ModelForm, SelectDateWidget, TextInput
 
+# revers URL
+from django.urls import reverse
+
 class User(AbstractUser):
     pass
 
@@ -45,19 +48,15 @@ class Listing(models.Model):
         return self.name
 
 class watchlist(models.Model):
-    status = models.BooleanField(default=False)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, default= 1, on_delete=models.CASCADE)
-    date = models.DateTimeField(auto_now=True)
-    listing_list =  models.ForeignKey(Listing, on_delete=models.CASCADE, blank=True, null=True)
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, default= 1, on_delete=models.CASCADE)
+    product = models.ForeignKey(Listing, on_delete=models.CASCADE, blank=True, null=True)
     
     def __str__(self):
-        return f"{self.status}"
+        return f"{self.owner} for {self.product}"
 
-    def __unicode__(self):
-        return self.status
     
     def get_absolute_url(self):
-        return reverse('watchlist', kwargs={'pk': self.pk})
+        return reverse('watchcreate', kwargs={'pk': self.pk})
 
 class Bid(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, default= 1, on_delete=models.CASCADE)
@@ -114,5 +113,5 @@ class WatchForm(ModelForm):
     class Meta:
         model = watchlist
         fields = ('__all__')
-        exclude =('user', 'date','listing_list')
+        
         

@@ -1,0 +1,22 @@
+{% extends "auctions/layout.html" %}
+{% block body %}
+{% load static %}
+
+        {% if user.is_authenticated %}
+        <form method="post">{% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" value="Save">
+        </form>
+        
+
+                    {% else %}
+                    <div class="alert alert-danger" role="alert">
+                        Not signed in.
+                    </div>
+                    {% endif %}
+        
+    
+</ul>
+    </div>
+</div>
+{% endblock %}

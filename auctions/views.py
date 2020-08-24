@@ -4,7 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
-from .models import User, Listing, ListingForm, WatchForm
+from .models import User, Listing, ListingForm, watchlist, WatchForm
 from django.shortcuts import render
 
 
@@ -13,7 +13,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, DetailView, FormView
 from django.utils import timezone
 
-
+from django.views.generic.edit import CreateView
 
 # import os
 # from django.conf import settings
@@ -107,18 +107,39 @@ def newlisting(request):
         form = ListingForm()
     return render(request, 'auctions/new_listing.html', {'form': form})
 
-class listingpage(DetailView, FormView):
+class listingpage(DetailView):
     model = Listing
     context_object_name = 'listing'
     template_name = 'auctions/listing_page.html'
-    form_class = WatchForm
-    # retrun 
-    def get_success_url(self):
-        return self.request.path
+
+
+# class ContactView(FormView):
+#     template_name = 'watchcreate.html'
+#     form_class = WatchForm
+#     success_url = '/thanks/'
+
+#     def form_valid(self, form):
+#         # This method is called when valid form data has been POSTed.
+#         # It should return an HttpResponse.
+#         print("valid")
+#         return super().form_valid(form)
+
+class watchcreate(CreateView):
+    model = watchlist
+    fields = ['owner','product' ]
     
     def form_valid(self, form):
         # This method is called when valid form data has been POSTed.
         # It should return an HttpResponse.
-        
+       
+        print("valid")
         return super().form_valid(form)
-    
+
+class WatchListView(ListView):
+
+    model = watchlist
+    paginate_by = 100  # if pagination is desired
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
