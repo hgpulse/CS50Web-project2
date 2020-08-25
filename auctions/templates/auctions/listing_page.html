@@ -14,7 +14,23 @@
         
         
         <div class="row-detail" >
-            
+            {% if user.is_authenticated %}
+                
+                <form action="{% url 'watchcreate' pk=listing.id %}" method="post">
+                    {% csrf_token %}
+                    
+                    <input type="hidden"  name="product" value={{listing.pk}}>
+                    <input type="hidden"  name="owner" value={{user}}>
+
+                    <input class="btn btn-primary" type="submit" value="Add to watch list">
+                </form>
+
+
+                    {% else %}
+                    <div class="alert alert-danger" role="alert">
+                        Not signed in.
+                    </div>
+                    {% endif %}
             
             <div class="col-xs-9 col-md-7">
                 {% if listing.image %}
@@ -25,26 +41,26 @@
             <div class="col-xs-3 col-md-5">
                 {{listing.description}}
                 <p>{{listing.category}} Category </p>
-                {% if user.is_authenticated %}
-                product :{{listing.pk}}
-                owner: {{user}}
-                <form action="{% url 'watchcreate' pk=listing.id %}" method="post">
-                    {% csrf_token %}
-                    
-                    <input type="hidden"  name="product" value={{listing.pk}}>
-                    <input type="hidden"  name="owner" value={{user}}>
-
-                    <input class="btn btn-primary" type="submit" value="Add to watch list">
-                </form>
-                    {% else %}
-                    <div class="alert alert-danger" role="alert">
-                        Not signed in.
-                    </div>
-                    {% endif %}
+                
             </div>
             
             <div class="col-xs-3 col-md-5">
                 <h3>Price: {{listing.initial_price}} .-</h3>
+                {% if user.is_authenticated %}
+                <form action="{% url 'bidcreate' pk=listing.id %}" method="post">
+                    {% csrf_token %}
+                        {{ form.initial_price.errors }}
+      
+                        {{ form.initial_price }}
+                        
+                   
+                    <input type="text" name="bid" class="form-control" value={{listing.initial_price}}  placeholder="Your Bid" required>
+                    <input type="hidden"  name="owner" value={{user}}>
+
+                    <input class="btn btn-primary" type="submit" value="Place a Bid">
+                </form>
+               
+                {% endif %}
                 <p>on the {{listing.date}} by {{listing.user}}</p>
                 
             </div>

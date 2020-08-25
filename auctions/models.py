@@ -13,7 +13,15 @@ from django.urls import reverse
 class User(AbstractUser):
     pass
 
+class watchlist(models.Model):
+    user = models.CharField(max_length=100, blank=True, null=True)
+    listing_id = models.IntegerField(blank=True, null=True)
+    def __str__(self):
+        return f"{self.user} for listing ID: {self.listing_id}"
 
+    
+    def get_absolute_url(self):
+        return reverse('listingpage', kwargs={'pk': self.listing_id})
 
 class Listing(models.Model):
     INACTIVE = 0
@@ -39,28 +47,19 @@ class Listing(models.Model):
     date = models.DateTimeField(auto_now=True)
     active = models.IntegerField(default=1, choices=STATUS)
     image = models.ImageField(upload_to='images', default='images', blank=True, null=True)
+    watchlist = models.ForeignKey(watchlist , on_delete=models.CASCADE, blank=True, null=True)
     
-
     def __str__(self):
         return f"{self.name} at {self.date}"
 
     def __unicode__(self):
         return self.name
 
-class watchlist(models.Model):
-    user = models.CharField(max_length=100, blank=True, null=True)
-    listing_id = models.IntegerField(blank=True, null=True)
-    
-    def __str__(self):
-        return f"{self.user} for listing ID: {self.listing_id}"
 
-    
-    def get_absolute_url(self):
-        return reverse('listingpage', kwargs={'pk': self.listing_id})
 
 class Bid(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, default= 1, on_delete=models.CASCADE)
-    price = models.ForeignKey(Listing , on_delete=models.CASCADE)
+    price = models.IntegerField()
     date = models.DateTimeField(auto_now=True)
 
     def __unicode__(self):
@@ -108,11 +107,11 @@ class ListingForm(ModelForm):
         }
 
 
-class WatchForm(ModelForm):
+# class WatchForm(ModelForm):
 
-    class Meta:
-        model = watchlist
-        fields = ('__all__')
+#     class Meta:
+#         model = Listing
+#         fields = ('watchlist', 'user')
         
         
         

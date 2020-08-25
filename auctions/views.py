@@ -4,7 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render
 from django.urls import reverse
 
-from .models import User, Listing, ListingForm, watchlist, WatchForm
+from .models import User, Listing, ListingForm, watchlist, Bid
 from django.shortcuts import render
 
 
@@ -127,13 +127,42 @@ def watchcreate(request,pk):
             
             d = watchlist.objects.filter(listing_id=product).delete()
             return HttpResponse("%s Remove from watchlist." % product)
-            
+
         else:
             # create the object
             b = watchlist(user=owner, listing_id=product)
             b.save()
             
             return HttpResponse("%s Add to watchlist." % product)
+        
+        
+    else:
+            
+       return HttpResponse("nothing to do !!!!.")
+
+@login_required
+def bidcreate(request,pk):
+   
+    if request.method == 'POST':
+        # store the input
+        owner = request.POST["owner"]
+        bid = request.POST["bid"]
+        form = ListingForm(request.POST)
+        if form.is_valid():
+             print(owner)
+             print(bid)
+        
+        # if bid.objects.filter(user=owner).exists() and bid.objects.filter(price=bid).exists():
+            
+        #     d = watchlist.objects.filter(price=bid).delete()
+        #     return HttpResponse("%s Remove from watchlist." % product)
+
+        # else:
+            # create the object
+        b = bid(user=owner, price=bid)
+        b.save()
+            
+        return HttpResponse("%s Add to Bid." % bid)
         
         
     else:

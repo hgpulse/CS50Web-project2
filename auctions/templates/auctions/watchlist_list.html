@@ -2,24 +2,25 @@
 {% block body %}
 {% load static %}
 
-        {% if user.is_authenticated %}
+{% if user.is_authenticated %}
         <h1>WatchList</h1>
 <ul>
-{% for article in object_list %}
-    {% if user == article.user and article.listing_id != None %}
-        <li>{{ article.user }} - {{ article.listing_id }}</li>
+    {% for article in object_list %}
+        {% if user == article.user %}
+            <li>{{ article.user }}----{{ article.listing_id }}</li>
     
-    {% endif %}
+        {% endif %}
 {% empty %}
     <li>No articles yet.</li>
+    
 {% endfor %}
 </ul>
 
-                    {% else %}
-                    <div class="alert alert-danger" role="alert">
-                        Not signed in.
-                    </div>
-                    {% endif %}
+{% else %}
+    <div class="alert alert-danger" role="alert">
+        Not signed in.
+    </div>
+{% endif %}
         
     
 </ul>
