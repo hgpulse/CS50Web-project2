@@ -58,7 +58,7 @@ class Listing(models.Model):
 
 
 class Bid(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, default= 1, on_delete=models.CASCADE)
+    user = models.CharField(max_length=100, blank=True, null=True)
     price = models.IntegerField()
     date = models.DateTimeField(auto_now=True)
 
@@ -69,7 +69,7 @@ class Bid(models.Model):
         return f"{self.price} on the {self.date}"
 
 class Comment(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, default= 1, on_delete=models.CASCADE)
+    user = models.CharField(max_length=100, blank=True, null=True)
     title = models.CharField(max_length=32)
     content = models.CharField(max_length=100)
     date = models.DateTimeField(auto_now=True)
@@ -107,11 +107,10 @@ class ListingForm(ModelForm):
         }
 
 
-# class WatchForm(ModelForm):
-
-#     class Meta:
-#         model = Listing
-#         fields = ('watchlist', 'user')
+class BidForm(ModelForm):
+    class Meta:
+        model = Bid
+        fields = ('__all__')
         
         
         

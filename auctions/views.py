@@ -4,7 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render
 from django.urls import reverse
 
-from .models import User, Listing, ListingForm, watchlist, Bid
+from .models import User, Listing, ListingForm, watchlist, Bid, BidForm
 from django.shortcuts import render
 
 
@@ -93,12 +93,7 @@ def newlisting(request):
             instance.save()
             
             print("valid")
-            # form.save
-            # store the user instance 
             
-        
-            #fs.save()
-            # Get the current instance object to display in the template
             img_obj = form.instance
             
             return render(request, 'auctions/new_listing.html', {'form': form, 'img_obj': img_obj})
@@ -142,16 +137,36 @@ def watchcreate(request,pk):
 
 @login_required
 def bidcreate(request,pk):
-   
+    listing_id = Listing.objects.filter(pk=pk)
+    print(listing_id)
     if request.method == 'POST':
         # store the input
         owner = request.POST["owner"]
         bid = request.POST["bid"]
-        form = ListingForm(request.POST)
-        if form.is_valid():
-             print(owner)
-             print(bid)
+    
+        form = BidForm(request.POST)
         
+        if form.is_valid():
+            instance = form.save(commit=False)
+            instance.user = request.user
+            if not request.user == instance.user:
+                raise Http404
+            instance.save()
+            
+            print("valid")
+            
+            
+            
+            return render(request, 'auctions/bid_form.html', {'form': form})
+        #use the modelForm
+        # form = BidForm(request.POST)
+        # print(owner)
+        # print(bid)
+        # b = bid(user=owner, price=bid)
+        # b.save()
+        # return HttpResponse("%s Add to Bid. for %s" % bid)
+       
+            
         # if bid.objects.filter(user=owner).exists() and bid.objects.filter(price=bid).exists():
             
         #     d = watchlist.objects.filter(price=bid).delete()
@@ -159,15 +174,15 @@ def bidcreate(request,pk):
 
         # else:
             # create the object
-        b = bid(user=owner, price=bid)
-        b.save()
+        
             
-        return HttpResponse("%s Add to Bid." % bid)
+        
         
         
     else:
-            
-       return HttpResponse("nothing to do !!!!.")
+        form = BidForm()
+    return render(request, 'auctions/bid_form.html', {'form': form})     
+       
 # class watchcreate(CreateView):
 #     model = watchlist
 #     fields = ['product', 'owner']
