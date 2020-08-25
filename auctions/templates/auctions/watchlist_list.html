@@ -6,8 +6,8 @@
         <h1>WatchList</h1>
 <ul>
 {% for article in object_list %}
-    {% if user == article.owner and article.product != None %}
-        <li>{{ article.owner }} - {{ article.product }}</li>
+    {% if user == article.user and article.listing_id != None %}
+        <li>{{ article.user }} - {{ article.listing_id }}</li>
     
     {% endif %}
 {% empty %}

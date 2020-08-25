@@ -1,6 +1,6 @@
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render
 from django.urls import reverse
 
@@ -79,6 +79,7 @@ def register(request):
 @login_required
 def newlisting(request):
     
+    
     """Process images uploaded by users"""
     if request.method == 'POST':
        
@@ -113,27 +114,54 @@ class listingpage(DetailView):
     template_name = 'auctions/listing_page.html'
 
 
-# class ContactView(FormView):
-#     template_name = 'watchcreate.html'
-#     form_class = WatchForm
-#     success_url = '/thanks/'
+@login_required
+def watchcreate(request,pk):
+    # pk = request.GET['pk']
+    if request.method == 'POST':
+        # store the input
+        owner = request.POST["owner"]
+        product = request.POST["product"]
+        
+        # query existing object if exist delete
+        if watchlist.objects.filter(user=owner).exists() and watchlist.objects.filter(listing_id=product).exists():
+            
+            d = watchlist.objects.filter(listing_id=product).delete()
+            return HttpResponse("%s Remove from watchlist." % product)
+            
+        else:
+            # create the object
+            b = watchlist(user=owner, listing_id=product)
+            b.save()
+            
+            return HttpResponse("%s Add to watchlist." % product)
+        
+        
+    else:
+            
+       return HttpResponse("nothing to do !!!!.")
+# class watchcreate(CreateView):
+#     model = watchlist
+#     fields = ['product', 'owner']
+    
+#     def get_initial(self):
+#         # Retrieve initial data for the form. By default, returns a copy of initial.
+#         print(self.request.user)
+    
+#     # def get_context_data(self, **kwargs):
+#     #     # Call the base implementation first to get a context
+#     #     context = super().get_context_data(**kwargs)
+#     #     # Add in a QuerySet of all the books
+#     #     context['watchlist'] = watchlist.objects.all()
+#     #     return context
+   
 
 #     def form_valid(self, form):
 #         # This method is called when valid form data has been POSTed.
 #         # It should return an HttpResponse.
-#         print("valid")
-#         return super().form_valid(form)
+#         form.instance.owner = self.request.user
+#         # form.instance.product = self.request.pk
 
-class watchcreate(CreateView):
-    model = watchlist
-    fields = ['owner','product' ]
-    
-    def form_valid(self, form):
-        # This method is called when valid form data has been POSTed.
-        # It should return an HttpResponse.
-       
-        print("valid")
-        return super().form_valid(form)
+#         return super().form_valid(form)
 
 class WatchListView(ListView):
 

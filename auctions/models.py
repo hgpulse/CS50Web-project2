@@ -48,15 +48,15 @@ class Listing(models.Model):
         return self.name
 
 class watchlist(models.Model):
-    owner = models.ForeignKey(settings.AUTH_USER_MODEL, default= 1, on_delete=models.CASCADE)
-    product = models.ForeignKey(Listing, on_delete=models.CASCADE, blank=True, null=True)
+    user = models.CharField(max_length=100, blank=True, null=True)
+    listing_id = models.IntegerField(blank=True, null=True)
     
     def __str__(self):
-        return f"{self.owner} for {self.product}"
+        return f"{self.user} for listing ID: {self.listing_id}"
 
     
     def get_absolute_url(self):
-        return reverse('watchcreate', kwargs={'pk': self.pk})
+        return reverse('listingpage', kwargs={'pk': self.listing_id})
 
 class Bid(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, default= 1, on_delete=models.CASCADE)
@@ -113,5 +113,6 @@ class WatchForm(ModelForm):
     class Meta:
         model = watchlist
         fields = ('__all__')
+        
         
         

@@ -4,7 +4,8 @@
 
         {% if user.is_authenticated %}
         <form method="post">{% csrf_token %}
-            {{ form.as_p }}
+            {{ form.owner }}
+            {{ form.product }}
             <input type="submit" value="Save">
         </form>
         
