@@ -1,7 +1,7 @@
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect, Http404
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.urls import reverse
 
 from .models import User, Listing, ListingForm, watchlist, Bid, BidForm
@@ -14,6 +14,8 @@ from django.views.generic import ListView, DetailView, FormView
 from django.utils import timezone
 
 from django.views.generic.edit import CreateView
+
+from django.db.models import Max
 
 # import os
 # from django.conf import settings
@@ -111,7 +113,7 @@ class listingpage(DetailView):
 
 @login_required
 def watchcreate(request,pk):
-    # pk = request.GET['pk']
+    listing_id = pk
     if request.method == 'POST':
         # store the input
         owner = request.POST["owner"]
@@ -121,91 +123,64 @@ def watchcreate(request,pk):
         if watchlist.objects.filter(user=owner).exists() and watchlist.objects.filter(listing_id=product).exists():
             
             d = watchlist.objects.filter(listing_id=product).delete()
-            return HttpResponse("%s Remove from watchlist." % product)
+            return redirect("listingpage", pk=listing_id)
 
         else:
             # create the object
             b = watchlist(user=owner, listing_id=product)
             b.save()
             
-            return HttpResponse("%s Add to watchlist." % product)
+            return redirect("listingpage", pk=listing_id)
         
         
     else:
             
-       return HttpResponse("nothing to do !!!!.")
+       return redirect("listingpage", pk=listing_id)
 
 @login_required
 def bidcreate(request,pk):
-    listing_id = Listing.objects.filter(pk=pk)
-    print(listing_id)
+    
+    listing_id = pk
+    
     if request.method == 'POST':
         # store the input
+        # owner = request.POST["owner"]
+        # bid = request.POST["bid"]
+        
+        #query actual listing price with get
+        ListingLive = Listing.objects.get(pk=listing_id)
+        
+        #store the initial price
+        ListingPrice = ListingLive.initial_price
+        
+        print(f"live: {ListingPrice}")
+        
         owner = request.POST["owner"]
-        bid = request.POST["bid"]
-    
-        form = BidForm(request.POST)
+        bid = float(request.POST["bid"])
+        print(owner)
+        print(bid)
+        print(pk)
         
-        if form.is_valid():
-            instance = form.save(commit=False)
-            instance.user = request.user
-            if not request.user == instance.user:
-                raise Http404
-            instance.save()
-            
-            print("valid")
-            
-            
-            
-            return render(request, 'auctions/bid_form.html', {'form': form})
-        #use the modelForm
-        # form = BidForm(request.POST)
-        # print(owner)
-        # print(bid)
-        # b = bid(user=owner, price=bid)
-        # b.save()
-        # return HttpResponse("%s Add to Bid. for %s" % bid)
+        # check if there is a bid for the Listing PK
+        args = Bid.objects.filter(listing_id=pk)
+        
+        if args:
+            #if yes select the winner 
+            args.aggregate(Max('price')) # {'rating__max': 5}
+            winner = args.order_by('-price')[0]
+            print(winner.user)
+        # if not compare to initial price
+        elif bid >= ListingPrice:
+            return HttpResponse('<h1>bid was higher or egual %s</h1>' % bid)
+        
+        return HttpResponse('<h1>Your offer is too low actual price is %s</h1>' % ListingPrice)
+
+        return redirect("listingpage", pk=listing_id)
+     
+
+    return redirect("listingpage", pk=listing_id)   
        
-            
-        # if bid.objects.filter(user=owner).exists() and bid.objects.filter(price=bid).exists():
-            
-        #     d = watchlist.objects.filter(price=bid).delete()
-        #     return HttpResponse("%s Remove from watchlist." % product)
 
-        # else:
-            # create the object
-        
-            
-        
-        
-        
-    else:
-        form = BidForm()
-    return render(request, 'auctions/bid_form.html', {'form': form})     
-       
-# class watchcreate(CreateView):
-#     model = watchlist
-#     fields = ['product', 'owner']
-    
-#     def get_initial(self):
-#         # Retrieve initial data for the form. By default, returns a copy of initial.
-#         print(self.request.user)
-    
-#     # def get_context_data(self, **kwargs):
-#     #     # Call the base implementation first to get a context
-#     #     context = super().get_context_data(**kwargs)
-#     #     # Add in a QuerySet of all the books
-#     #     context['watchlist'] = watchlist.objects.all()
-#     #     return context
-   
-
-#     def form_valid(self, form):
-#         # This method is called when valid form data has been POSTed.
-#         # It should return an HttpResponse.
-#         form.instance.owner = self.request.user
-#         # form.instance.product = self.request.pk
-
-#         return super().form_valid(form)
 
 class WatchListView(ListView):
 

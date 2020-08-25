@@ -50,7 +50,7 @@ class Listing(models.Model):
     watchlist = models.ForeignKey(watchlist , on_delete=models.CASCADE, blank=True, null=True)
     
     def __str__(self):
-        return f"{self.name} at {self.date}"
+        return f"{self.name} at {self.date} for {self.initial_price}"
 
     def __unicode__(self):
         return self.name
@@ -60,13 +60,14 @@ class Listing(models.Model):
 class Bid(models.Model):
     user = models.CharField(max_length=100, blank=True, null=True)
     price = models.IntegerField()
+    listing_id = models.IntegerField(blank=True, null=True)
     date = models.DateTimeField(auto_now=True)
 
     def __unicode__(self):
         return self.price
 
     def __str__(self):
-        return f"{self.price} on the {self.date}"
+        return f"{self.price} on the {self.date} by {self.user}"
 
 class Comment(models.Model):
     user = models.CharField(max_length=100, blank=True, null=True)

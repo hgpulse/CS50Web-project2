@@ -13,7 +13,6 @@ urlpatterns = [
     path("active-listing", views.index, name="index"),
     path("listing-page/<int:pk>/", listingpage.as_view(), name="listingpage"),
     path("listing-page/<int:pk>/watch-create/", views.watchcreate, name="watchcreate"),
-    # path("listing-page/<int:pk>/add-to-watch-list", watchcreate.as_view(), name="watchcreate"),
     path('watch-list/', WatchListView.as_view(), name='watch-list'),
     path("listing-page/<int:pk>/bid-create/", views.bidcreate, name="bidcreate"),
 
