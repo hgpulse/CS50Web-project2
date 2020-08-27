@@ -6,10 +6,10 @@
         <h1>WatchList</h1>
 <ul>
     {% for article in object_list %}
-        {% if user == article.user %}
+        
             <li>{{ article.user }}----{{ article.listing_id }}</li>
     
-        {% endif %}
+        
 {% empty %}
     <li>No articles yet.</li>
     

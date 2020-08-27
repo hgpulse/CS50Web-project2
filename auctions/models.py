@@ -48,6 +48,7 @@ class Listing(models.Model):
     active = models.IntegerField(default=1, choices=STATUS)
     image = models.ImageField(upload_to='images', default='images', blank=True, null=True)
     watchlist = models.ForeignKey(watchlist , on_delete=models.CASCADE, blank=True, null=True)
+    winner = models.CharField(max_length=100,blank=True, null=True)
     
     def __str__(self):
         return f"{self.name} at {self.date} for {self.initial_price}"

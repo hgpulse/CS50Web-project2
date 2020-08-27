@@ -164,15 +164,29 @@ def bidcreate(request,pk):
         # check if there is a bid for the Listing PK
         args = Bid.objects.filter(listing_id=pk)
         
-        if args:
-            #if yes select the winner 
+        # compare to initial price
+        if bid >= ListingPrice:
+            # create the bid
+            b0 = Bid(user=owner, price=bid, listing_id=listing_id)
+            b0.save()
+            #update listing initial price
+            Listing.objects.filter(pk=listing_id).update(initial_price=bid,winner=owner)
+            return HttpResponse('<h1>your bid: %s is done</h1>' % bid)
+            return redirect("listingpage", pk=listing_id)
+
+        elif args:
+            #if yes select the winner and update the price in listing
             args.aggregate(Max('price')) # {'rating__max': 5}
             winner = args.order_by('-price')[0]
-            print(winner.user)
-        # if not compare to initial price
-        elif bid >= ListingPrice:
-            return HttpResponse('<h1>bid was higher or egual %s</h1>' % bid)
-        
+            print(f"actual winner {winner.user}")
+            #update listing initial price
+            Listing.objects.filter(pk=listing_id).update(initial_price=bid,winner=owner)
+            # create the bid
+            b0 = Bid(user=owner, price=bid, listing_id=listing_id)
+            b0.save()
+            print(ListingLive.initial_price)
+
+
         return HttpResponse('<h1>Your offer is too low actual price is %s</h1>' % ListingPrice)
 
         return redirect("listingpage", pk=listing_id)
