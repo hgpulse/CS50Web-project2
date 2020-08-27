@@ -1,10 +1,11 @@
 {% extends "auctions/layout.html" %}
 {% block body %}
 {% load static %}
-<h1>Active Listing</h1>
+
 <div class="center">
     <div class="left-inside">
 <ul>
+    <h1>Active Listing</h1>
     {% for listing in all_entries %}
         {% if listing.active == 1 %}
         <a  href="{% url 'listingpage' pk=listing.id %}">
@@ -34,5 +35,42 @@
     {% endfor %}
 </ul>
     </div>
+
+    <ul>
+        <h1>Closed Listing</h1>
+        
+        {% if listing.winner == user %}
+            Congreates {{listing.winner}} you win!
+        {% endif %}
+        
+        {% for listing in all_entries %}
+            {% if listing.active == 0 %}
+            <a  href="{% url 'listingpage' pk=listing.id %}">
+            <h1>{{ listing.name }}</h1>
+            <p>by {{ listing.user }}</p>
+         
+            <div class="row" >
+                 
+                
+                <div class="col-xs-9 col-md-7">
+                    {% if listing.image %}
+                        <img src="{{ listing.image.url }}" style="max-height:300px" alt="{{ listing.name }}">
+                    {% endif %}
+                </div>
+                <div class="col-xs-3 col-md-5">
+                    {{ listing.description }}
+                    
+                </div>
+                <div class="col-xs-3 col-md-5">
+                    <h3>Price: {{ listing.initial_price }} .- </h3>
+                    
+                </div>
+              
+            </div>
+            </a>  
+            {% endif %}
+        {% endfor %}
+    </ul>
+        </div>
 </div>
 {% endblock %}

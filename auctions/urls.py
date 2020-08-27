@@ -15,6 +15,7 @@ urlpatterns = [
     path("listing-page/<int:pk>/watch-create/", views.watchcreate, name="watchcreate"),
     path('watch-list/', WatchListView.as_view(), name='watch-list'),
     path("listing-page/<int:pk>/bid-create/", views.bidcreate, name="bidcreate"),
+    path("listing-page/<int:pk>/auction-close/", views.auctionclose, name="auctionclose"),
 
     
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

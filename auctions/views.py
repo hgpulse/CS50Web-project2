@@ -194,7 +194,31 @@ def bidcreate(request,pk):
 
     return redirect("listingpage", pk=listing_id)   
        
+@login_required
+def auctionclose(request,pk):
+    
+    listing_id = pk
+    
+    if request.method == 'POST':
+       
+        # get the object
+        ListingLive = Listing.objects.get(pk=listing_id)
+        
+        #store the owner of the auction
+        ListingUser = ListingLive.user
+        
+        print(f"live: {ListingUser}")
+        
+        owner = request.POST["owner"]
+        
+        
+        print(f"live: {ListingUser} egual {owner}")
+        #update listing initial price
+        Listing.objects.filter(pk=listing_id).update(active=0)
+        return redirect("index")
+     
 
+    return redirect("index")   
 
 class WatchListView(ListView):
 
