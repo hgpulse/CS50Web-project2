@@ -14,7 +14,7 @@ class User(AbstractUser):
     pass
 
 class watchlist(models.Model):
-    user = models.CharField(max_length=100, blank=True, null=True)
+    user = models.IntegerField(blank=True, null=True)
     listing_id = models.IntegerField(blank=True, null=True)
     def __str__(self):
         return f"{self.user} for listing ID: {self.listing_id}"
@@ -48,7 +48,7 @@ class Listing(models.Model):
     active = models.IntegerField(default=1, choices=STATUS)
     image = models.ImageField(upload_to='images', default='images', blank=True, null=True)
     watchlist = models.ForeignKey(watchlist , on_delete=models.CASCADE, blank=True, null=True)
-    winner = models.CharField(max_length=100,blank=True, null=True)
+    winner = models.IntegerField(blank=True, null=True)
     
     def __str__(self):
         return f"{self.name} at {self.date} for {self.initial_price}"
@@ -82,19 +82,7 @@ class Comment(models.Model):
     def __unicode__(self):
         return self.title
 
-class ClientAccount(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, default= 1, on_delete=models.CASCADE)
-    created = models.DateTimeField(auto_now=True)
-    watchlist = models.ForeignKey(watchlist, on_delete=models.CASCADE, blank=True, null=True)
-    bid = models.ForeignKey(Bid, on_delete=models.CASCADE, blank=True, null=True)
-    comment = models.ForeignKey(Comment, on_delete=models.CASCADE, blank=True, null=True)
-    listing_own = models.ForeignKey(Listing, on_delete=models.CASCADE, blank=True, null=True)
 
-    def __str__(self):
-        return f" {self.user} created {self.created}"
-    
-    def __unicode__(self):
-        return self.user
 class ListingForm(ModelForm):
 
     class Meta:

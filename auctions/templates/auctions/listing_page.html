@@ -5,15 +5,12 @@
 <div class="center">
     <div class="left-detail">
 
-    
 <ul>
-    
-        
-    
+    {% if user.is_authenticated and user.pk == listing.winner and listing.active == 0 %}
+    <h2 style="color:#4CD4CB;">Congrats {{user}}! you win the auction!</h2>
+    {% endif %}
         <h1>{{listing.name}}</h1>
-        {% if listing.winner %}
-            Actual winner :{{listing.winner}}
-        {% endif %}
+        
         
         <div class="row-detail" >
             {% if user.is_authenticated %}
@@ -23,16 +20,17 @@
                     {% csrf_token %}
                     
                     <input type="hidden"  name="product" value={{listing.pk}}>
-                    <input type="hidden"  name="owner" value={{user}}>
+                    <input type="hidden"  name="owner" value={{user.pk}}>
 
                     <input class="btn btn-primary" type="submit" value="Add to watch list">
                 </form>
               
+                   
+                    {% endif %}
                     {% else %}
                     <div class="alert alert-danger" role="alert">
                         Not signed in.
                     </div>
-                    {% endif %}
                     {% endif %}
                     
             <div class="col-xs-9 col-md-7">
@@ -60,25 +58,28 @@
                         
                    
                     <input type="text" name="bid" class="form-control" value={{listing.initial_price}}  placeholder="Your Bid" required>
-                    <input type="hidden"  name="owner" value={{user}}>
+                    <input type="hidden"  name="owner" value={{user.pk}}>
                     
 
                     <input class="btn btn-primary" type="submit" value="Place a Bid">
                 </form>
                 
-                
+                {% if user.is_authenticated and user == listing.user %}
                 <form action="{% url 'auctionclose' pk=listing.id %}" method="post">
                     {% csrf_token %}
                      
                         
-                    <input type="hidden"  name="owner" value={{user}}>
+                    <input type="hidden"  name="owner" value={{user.pk}}>
                     
 
                     <input class="btn btn-danger" type="submit" value="Close the auction">
                 </form>
-                
                 {% endif %}
                 {% endif %}
+                {% endif %}
+                {% if listing.active == 0 %}
+        <h2 style="color:red;">Closed</h2>
+        {% endif %}
                 <p>Create on the  {{listing.date}} by {{listing.user}}</p>
                 
             </div>
