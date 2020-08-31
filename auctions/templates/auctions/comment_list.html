@@ -1,0 +1,15 @@
+{% extends "auctions/layout.html" %}
+{% block body %}
+{% load static %}
+
+<h1>Comments</h1>
+
+                      
+                            <ul>
+                            {% for comment in comments %}
+                                <li>{{ comment.date|date }} - {{ comment.content }} by {{ comment.user_id }}</li>
+                            {% empty %}
+                                <li>No comment yet.</li>
+                            {% endfor %}
+                            </ul>
+{% endblock %}

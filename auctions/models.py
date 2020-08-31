@@ -13,6 +13,18 @@ from django.urls import reverse
 class User(AbstractUser):
     pass
 
+class Comment(models.Model):
+    user_id = models.IntegerField(blank=True, null=True)
+    listing_id = models.IntegerField(blank=True, null=True)
+    content = models.CharField(max_length=100)
+    date = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"  {self.listing_id} wrote {self.content} on the {self.date}"
+
+    def __unicode__(self):
+        return self.listing_id
+
 class watchlist(models.Model):
     user = models.IntegerField(blank=True, null=True)
     listing_id = models.IntegerField(blank=True, null=True)
@@ -49,6 +61,7 @@ class Listing(models.Model):
     image = models.ImageField(upload_to='images', default='images', blank=True, null=True)
     watchlist = models.ForeignKey(watchlist , on_delete=models.CASCADE, blank=True, null=True)
     winner = models.IntegerField(blank=True, null=True)
+    comment = models.ManyToManyField(Comment , blank=True, null=True)
     
     def __str__(self):
         return f"{self.name} at {self.date} for {self.initial_price}"
@@ -70,17 +83,7 @@ class Bid(models.Model):
     def __str__(self):
         return f"{self.price} on the {self.date} by {self.user}"
 
-class Comment(models.Model):
-    user = models.CharField(max_length=100, blank=True, null=True)
-    title = models.CharField(max_length=32)
-    content = models.CharField(max_length=100)
-    date = models.DateTimeField(auto_now=True)
 
-    def __str__(self):
-        return f" {self.title} on the {self.date}"
-
-    def __unicode__(self):
-        return self.title
 
 
 class ListingForm(ModelForm):

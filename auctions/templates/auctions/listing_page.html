@@ -2,51 +2,53 @@
 {% block body %}
 {% load static %}
 <h1> {{ name }}</h1>
-<div class="center">
-    <div class="left-detail">
 
-<ul>
+<div class="center">
+   
+   
+
+    <div class="left-detail">
+       
     {% if user.is_authenticated and user.pk == listing.winner and listing.active == 0 %}
-    <h2 style="color:#4CD4CB;">Congrats {{user}}! you win the auction!</h2>
+    <h2 style="color:#4CD4CB;">Congrats {{user}}! you just win the auction!</h2>
     {% endif %}
         <h1>{{listing.name}}</h1>
-        
+        <div class="row">
+        <div class="col">
         
         <div class="row-detail" >
-            {% if user.is_authenticated %}
-            {% if listing.active == 1 %}
-                
-                <form action="{% url 'watchcreate' pk=listing.id %}" method="post">
-                    {% csrf_token %}
-                    
-                    <input type="hidden"  name="product" value={{listing.pk}}>
-                    <input type="hidden"  name="owner" value={{user.pk}}>
-
-                    <input class="btn btn-primary" type="submit" value="Add to watch list">
-                </form>
-              
-                   
-                    {% endif %}
-                    {% else %}
-                    <div class="alert alert-danger" role="alert">
-                        Not signed in.
-                    </div>
-                    {% endif %}
-                    
             <div class="col-xs-9 col-md-7">
                 {% if listing.image %}
                 <img src="{{ listing.image.url}}" style="max-height:300px" alt="{{ name }}">
                 {% endif %}
-            </div>
+           
             
-            <div class="col-xs-3 col-md-5">
+            
                 {{listing.description}}
                 
                 <p>{{listing.category}} Category </p>
                 
-            </div>
+       
             
-            <div class="col-xs-3 col-md-5">
+                {% if user.is_authenticated %}
+                {% if listing.active == 1 %}
+                    
+                    <form action="{% url 'watchcreate' pk=listing.id %}" method="post">
+                        {% csrf_token %}
+                        
+                        <input type="hidden"  name="product" value={{listing.pk}}>
+                        <input type="hidden"  name="owner" value={{user.pk}}>
+    
+                        <input class="btn btn-primary" type="submit" value="Add to watch list">
+                    </form>
+                  
+                       
+                        {% endif %}
+                        {% else %}
+                        <div class="alert alert-danger" role="alert">
+                            Not signed in.
+                        </div>
+                        {% endif %}
                 <h3>Price: {{listing.initial_price}} .-</h3>
                 {% if user.is_authenticated %}
                 {% if listing.active == 1 %}
@@ -63,7 +65,7 @@
 
                     <input class="btn btn-primary" type="submit" value="Place a Bid">
                 </form>
-                
+            
                 {% if user.is_authenticated and user == listing.user %}
                 <form action="{% url 'auctionclose' pk=listing.id %}" method="post">
                     {% csrf_token %}
@@ -77,18 +79,49 @@
                 {% endif %}
                 {% endif %}
                 {% endif %}
+                
                 {% if listing.active == 0 %}
+            
         <h2 style="color:red;">Closed</h2>
         {% endif %}
                 <p>Create on the  {{listing.date}} by {{listing.user}}</p>
-                
-            </div>
+        </div>
+  
+    </div>
+        {% if user.is_authenticated %}
           
         </div>
         
         
+     
+                    
+                  <div class="col-sm">
+                    <div class="row-detail">
+                    
+                        <h1>Comments</h1>
+                            {{listing.comment.user}}
+                            <ul>
+                            
+                            </ul>
+                                                    
+                        </div>
+                    <form action="{% url 'addcomment' pk=listing.id %}" method="post">
+                        {% csrf_token %}
+                         
+                        <input class="form-control" name="comment" type="text" placeholder="Your message">
+                        <input type="hidden"  name="owner" value={{user.pk}}>
+                        
     
-</ul>
-    </div>
-</div>
+                        <input class="btn btn-success" type="submit" value="Add comment">
+                    </form>
+                    
+                  </div>
+               
+            {% endif %}           
+  
+        
+               
+   
+
+
 {% endblock %}

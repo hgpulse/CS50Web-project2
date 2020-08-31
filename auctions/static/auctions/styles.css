@@ -26,6 +26,12 @@ body {
     margin:0 auto;
 }
 
+.right-inside {
+  text-align:right;
+  padding:5px;
+  margin:0 auto;
+}
+
 .center-form-create {
     text-align:center;
     padding:10px;

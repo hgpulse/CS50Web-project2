@@ -4,7 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render, redirect
 from django.urls import reverse
 
-from .models import User, Listing, ListingForm, watchlist, Bid, BidForm
+from .models import User, Listing, ListingForm, watchlist, Bid, BidForm, Comment
 from django.shortcuts import render
 
 
@@ -13,7 +13,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, DetailView, FormView
 from django.utils import timezone
 
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, SingleObjectMixin
 
 from django.db.models import Max
 
@@ -129,7 +129,7 @@ def watchcreate(request,pk):
             # create the object
             b = watchlist(user=owner, listing_id=product)
             b.save()
-            
+          
             return redirect("listingpage", pk=listing_id)
         
         
@@ -219,6 +219,42 @@ def auctionclose(request,pk):
      
 
     return redirect("index")   
+
+@login_required
+def addcomment(request,pk):
+    
+    listing_id = pk
+    
+    if request.method == 'POST':
+       
+        # get the object
+        getListing = Listing.objects.get(pk=listing_id)
+        
+        #store the owner of the auction
+        ListingUser = getListing.user
+        
+        print(f"live: {getListing}")
+        
+        owner = request.POST["owner"]
+        comment = request.POST["comment"]
+        
+        
+        print(f"live: {owner} user ID {owner} said {comment}")
+        # Create the comment
+        #c0 = Comment(user_id=owner, content=comment, listing_id=listing_id)
+        #c0.save()
+
+        # add the comment to the listing ID
+        print(getListing)
+        # Create and add a Publication to an Article in one step using create():
+        new_publication = getListing.comment.create(content=comment, user_id=owner, listing_id=listing_id)
+        # Listing.objects.filter(pk=listing_id).update(comment=c0)
+       
+        return redirect ("listingpage", pk=listing_id)
+     
+
+    return redirect ("listingpage", pk=listing_id)
+    
 
 class WatchListView(ListView):
 
