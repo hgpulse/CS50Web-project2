@@ -18,6 +18,7 @@ class Comment(models.Model):
     listing_id = models.IntegerField(blank=True, null=True)
     content = models.CharField(max_length=100)
     date = models.DateTimeField(auto_now=True)
+    author = models.CharField(max_length=100)
 
     def __str__(self):
         return f"  {self.listing_id} wrote {self.content} on the {self.date}"
@@ -61,13 +62,17 @@ class Listing(models.Model):
     image = models.ImageField(upload_to='images', default='images', blank=True, null=True)
     watchlist = models.ForeignKey(watchlist , on_delete=models.CASCADE, blank=True, null=True)
     winner = models.IntegerField(blank=True, null=True)
-    comment = models.ManyToManyField(Comment , blank=True, null=True)
+    comment = models.ManyToManyField(Comment , blank=True)
     
     def __str__(self):
         return f"{self.name} at {self.date} for {self.initial_price}"
 
     def __unicode__(self):
         return self.name
+    
+    def comments_all(self):
+        return ', '.join([a.comment_all for a in self.comment.all()])
+    comments_all.short_description = "comments_all"
 
 
 

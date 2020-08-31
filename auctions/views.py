@@ -110,6 +110,8 @@ class listingpage(DetailView):
     context_object_name = 'listing'
     template_name = 'auctions/listing_page.html'
 
+  
+
 
 @login_required
 def watchcreate(request,pk):
@@ -236,18 +238,16 @@ def addcomment(request,pk):
         print(f"live: {getListing}")
         
         owner = request.POST["owner"]
+        author = request.POST["author"]
         comment = request.POST["comment"]
         
         
         print(f"live: {owner} user ID {owner} said {comment}")
-        # Create the comment
-        #c0 = Comment(user_id=owner, content=comment, listing_id=listing_id)
-        #c0.save()
+    
 
-        # add the comment to the listing ID
-        print(getListing)
-        # Create and add a Publication to an Article in one step using create():
-        new_publication = getListing.comment.create(content=comment, user_id=owner, listing_id=listing_id)
+      
+        # Create and add comment to a listing in one step using create():
+        new_publication = getListing.comment.create(content=comment, user_id=owner, listing_id=listing_id, author=author)
         # Listing.objects.filter(pk=listing_id).update(comment=c0)
        
         return redirect ("listingpage", pk=listing_id)
