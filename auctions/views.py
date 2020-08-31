@@ -120,6 +120,7 @@ def watchcreate(request,pk):
         # store the input
         owner = request.POST["owner"]
         product = request.POST["product"]
+        product_title = request.POST["product_title"]
         
         # query existing object if exist delete
         if watchlist.objects.filter(user=owner).exists() and watchlist.objects.filter(listing_id=product).exists():
@@ -129,7 +130,7 @@ def watchcreate(request,pk):
 
         else:
             # create the object
-            b = watchlist(user=owner, listing_id=product)
+            b = watchlist(user=owner, listing_id=product, product_title=product_title)
             b.save()
           
             return redirect("listingpage", pk=listing_id)
@@ -159,9 +160,7 @@ def bidcreate(request,pk):
         
         owner = request.POST["owner"]
         bid = float(request.POST["bid"])
-        print(owner)
-        print(bid)
-        print(pk)
+        
         
         # check if there is a bid for the Listing PK
         args = Bid.objects.filter(listing_id=pk)
@@ -173,7 +172,7 @@ def bidcreate(request,pk):
             b0.save()
             #update listing initial price
             Listing.objects.filter(pk=listing_id).update(initial_price=bid,winner=owner)
-            return HttpResponse('<h1>your bid: %s is done</h1>' % bid)
+            # return HttpResponse('<h1>your bid: %s is done</h1>' % bid)
             return redirect("listingpage", pk=listing_id)
 
         elif args:
@@ -264,3 +263,8 @@ class WatchListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         return context
+
+class categories(ListView):
+    model = Listing
+    template_name = 'auctions/categories_list.html'
+    paginate_by = 100  # if pagination is desired

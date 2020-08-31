@@ -38,8 +38,9 @@
                         
                         <input type="hidden"  name="product" value={{listing.pk}}>
                         <input type="hidden"  name="owner" value={{user.pk}}>
+                        <input type="hidden"  name="product_title" value={{listing.name}}>
     
-                        <input class="btn btn-primary" type="submit" value="Add to watch list">
+                        <input class="btn btn-primary" type="submit" value="Watchlist">
                     </form>
                   
                        
@@ -94,8 +95,9 @@
 
                   <div class="col-sm">
                     <div class="row-detail">
-                    
-                        <h1>Comments</h1>
+                        
+                        <h3>Comments</h3>
+                        
                         <div class="card" >
                            
                             {% for comment in listing.comment.all %}

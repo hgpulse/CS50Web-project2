@@ -29,6 +29,7 @@ class Comment(models.Model):
 class watchlist(models.Model):
     user = models.IntegerField(blank=True, null=True)
     listing_id = models.IntegerField(blank=True, null=True)
+    product_title = models.CharField(max_length=100)
     def __str__(self):
         return f"{self.user} for listing ID: {self.listing_id}"
 

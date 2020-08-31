@@ -3,15 +3,15 @@
 {% load static %}
 
 {% if user.is_authenticated %}
-        <h1>WatchList</h1>
+        <h1>Categories</h1>
         
 <ul>
     {% for article in object_list %}
-        {% if user.pk == article.user %}
-        <a  href="{% url 'listingpage' pk=article.listing_id %}">
-            <h3>{{ article.product_title }}</h3>
-        </a>  
-            {% endif %}
+        
+        
+            <li>{{ article.name }} id {{ article.pk }} {{ article.category }}</li>
+       
+           
 {% empty %}
     <li>No articles yet.</li>
     
