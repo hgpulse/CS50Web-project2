@@ -47,9 +47,9 @@ class Listing(models.Model):
     )
     CAT_TYPE = (
         ('None', 'None'),
-        ('Gold', 'Brand New'),
-        ('Silver', 'Used with love'),
-        ('Bronze', 'Used with love for a longtime'),
+        ('Gold', 'Expert'),
+        ('Silver', 'Senior'),
+        ('Bronze', 'Entry level'),
         
     )
     name = models.CharField(max_length=50)
