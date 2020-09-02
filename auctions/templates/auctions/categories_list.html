@@ -2,30 +2,24 @@
 {% block body %}
 {% load static %}
 
-{% if user.is_authenticated %}
+
         <h1>Categories</h1>
         
-<ul>
-    {% for article in object_list %}
+        {%for cat in cat_list %}
         
-        
-            <li>{{ article.name }} id {{ article.pk }} {{ article.category }}</li>
+        <h2>{{cat}}</h2>
        
+        {% endfor %}
+            
            
-{% empty %}
-    <li>No articles yet.</li>
-    
-{% endfor %}
-</ul>
-
-{% else %}
-    <div class="alert alert-danger" role="alert">
-        Not signed in.
-    </div>
-{% endif %}
-        
-    
-</ul>
-    </div>
-</div>
+            <a  href="{% url 'catfilter' cat=silver %}">
+            <h2>{{silver}}</h2>
+            </a>
+            <a  href="{% url 'catfilter' cat=bronze %}">
+            <h2>{{bronze}}</h2>
+            </a>
+            <a  href="{% url 'catfilter' cat=gold %}">
+            <h2>{{gold}}</h2>
+            </a>
+     
 {% endblock %}

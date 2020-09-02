@@ -264,7 +264,33 @@ class WatchListView(ListView):
         context = super().get_context_data(**kwargs)
         return context
 
-class categories(ListView):
-    model = Listing
-    template_name = 'auctions/categories_list.html'
-    paginate_by = 100  # if pagination is desired
+def categories(request):
+    print(Listing.CAT_TYPE[0][1])
+
+    rockstar = Listing.CAT_TYPE[0][1]
+    chef = Listing.CAT_TYPE[1][1]
+    junior = Listing.CAT_TYPE[2][1]
+
+    cat_array = []
+    cat_array.append(rockstar)
+    cat_array.append(chef)
+    cat_array.append(junior)
+
+
+
+    gold = Listing.GOLD
+    silver = Listing.SILVER
+    bronze = Listing.BRONZE
+
+    cat_display = Listing.get_category_display
+    return render(request, "auctions/categories_list.html", {"gold": gold, "silver": silver, "bronze":bronze, "cat_list": cat_array })
+
+def catfilter(request, cat):
+    # get all the cat
+    print(cat)
+    get_cat = []
+    get_cat = Listing.objects.get(category=cat)
+    print(get_cat)
+    return render(request, "auctions/cat_filter.html")
+     
+

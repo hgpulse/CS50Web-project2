@@ -3,9 +3,11 @@ from django.db import models
 
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
-
+from django.utils.translation import gettext_lazy as _
 # modelsForm
 from django.forms import ModelForm, SelectDateWidget, TextInput
+
+
 
 # revers URL
 from django.urls import reverse
@@ -45,18 +47,24 @@ class Listing(models.Model):
         (INACTIVE, _('Inactive')),
         (ACTIVE, _('Active')),
     )
+    
+   
+    GOLD = 3
+    SILVER = 4
+    BRONZE = 5
+    
+    
     CAT_TYPE = (
-        ('None', 'None'),
-        ('Gold', 'Expert'),
-        ('Silver', 'Senior'),
-        ('Bronze', 'Entry level'),
+        ('GOLD', _('Rockstar')),
+        ('SILVER', _('Chef')),
+        ('BRONZE', _('Junior')),
         
     )
     name = models.CharField(max_length=50)
     initial_price = models.IntegerField()
     # can get via sessions ID
     user = models.ForeignKey(settings.AUTH_USER_MODEL, default= 1, on_delete=models.CASCADE)
-    category = models.CharField(max_length=64, choices=CAT_TYPE, default=CAT_TYPE[0][0], blank=True, null=True)
+    category = models.CharField(max_length=64, choices=CAT_TYPE, default=2, blank=True, null=True)
     description = models.CharField(max_length=100)
     date = models.DateTimeField(auto_now=True)
     active = models.IntegerField(default=1, choices=STATUS)
@@ -75,7 +83,11 @@ class Listing(models.Model):
         return ', '.join([a.comment_all for a in self.comment.all()])
     comments_all.short_description = "comments_all"
 
-
+    def is_upperclass(self):
+        return self.category in {self.NADA, self.GOLD, self.SILVER, self.BRONZE }
+    
+    def __str__(self):
+        return self.get_category_display()
 
 class Bid(models.Model):
     user = models.CharField(max_length=100, blank=True, null=True)
@@ -110,6 +122,11 @@ class BidForm(ModelForm):
     class Meta:
         model = Bid
         fields = ('__all__')
+
+class CatForm(ModelForm):
+    class Meta:
+        model = Listing
+        fields = ('category',)
         
         
         

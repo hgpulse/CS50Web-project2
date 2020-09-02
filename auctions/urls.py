@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from auctions.views import listingpage, WatchListView, categories
+from auctions.views import listingpage, WatchListView
 from django.conf.urls.static import static
 from django.conf import settings
 
@@ -17,7 +17,11 @@ urlpatterns = [
     path("listing-page/<int:pk>/bid-create/", views.bidcreate, name="bidcreate"),
     path("listing-page/<int:pk>/auction-close/", views.auctionclose, name="auctionclose"),
     path("listing-page/<int:pk>/add-comment/", views.addcomment, name="addcomment"),
-    path('categories/', categories.as_view(), name='categories'),
+    #path('categories/', categories.as_view(), name='categories'),
+    path("categories/", views.categories, name="categories"),
+    path("categories/<int:cat>", views.catfilter, name="catfilter"),
+
+   
    
 
     

@@ -3,8 +3,9 @@
 {% load static %}
 <h1> {{ name }}</h1>
 
+
 <div class="center">
-   
+ 
    
 
     <div class="left-detail">
@@ -45,10 +46,7 @@
                   
                        
                         {% endif %}
-                        {% else %}
-                        <div class="alert alert-danger" role="alert">
-                            Not signed in.
-                        </div>
+                        
                         {% endif %}
                 <h3>Price: {{listing.initial_price}}.-</h3>
                 {% if user.is_authenticated %}
@@ -81,11 +79,12 @@
                 {% endif %}
                 {% endif %}
                 
+        
+                <p>Create on the  {{listing.date}} by {{listing.user}}</p>
                 {% if listing.active == 0 %}
             
-        <h2 style="color:red;">Closed</h2>
-        {% endif %}
-                <p>Create on the  {{listing.date}} by {{listing.user}}</p>
+                <h2 style="color:red;">Closed</h2>
+                {% endif %}
         </div>
   
     </div>
@@ -125,7 +124,7 @@
                   </div>
                
             {% endif %}           
-  
+           
         
                
    
