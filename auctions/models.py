@@ -49,22 +49,22 @@ class Listing(models.Model):
     )
     
    
-    GOLD = 3
-    SILVER = 4
-    BRONZE = 5
+    GOLD = 1
+    SILVER = 2
+    BRONZE = 3
     
     
     CAT_TYPE = (
-        ('GOLD', _('Rockstar')),
-        ('SILVER', _('Chef')),
-        ('BRONZE', _('Junior')),
+        (GOLD, _('GOLD')),
+        (SILVER, _('SILVER')),
+        (BRONZE, _('BRONZE')),
         
     )
     name = models.CharField(max_length=50)
     initial_price = models.IntegerField()
     # can get via sessions ID
     user = models.ForeignKey(settings.AUTH_USER_MODEL, default= 1, on_delete=models.CASCADE)
-    category = models.CharField(max_length=64, choices=CAT_TYPE, default=2, blank=True, null=True)
+    category = models.IntegerField(choices=CAT_TYPE, default=None, blank=True, null=True)
     description = models.CharField(max_length=100)
     date = models.DateTimeField(auto_now=True)
     active = models.IntegerField(default=1, choices=STATUS)
@@ -84,7 +84,7 @@ class Listing(models.Model):
     comments_all.short_description = "comments_all"
 
     def is_upperclass(self):
-        return self.category in {self.NADA, self.GOLD, self.SILVER, self.BRONZE }
+        return self.category in {self.GOLD, self.SILVER, self.BRONZE }
     
     def __str__(self):
         return self.get_category_display()
@@ -123,10 +123,7 @@ class BidForm(ModelForm):
         model = Bid
         fields = ('__all__')
 
-class CatForm(ModelForm):
-    class Meta:
-        model = Listing
-        fields = ('category',)
+
         
         
         

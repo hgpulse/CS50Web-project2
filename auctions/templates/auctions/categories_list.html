@@ -5,21 +5,10 @@
 
         <h1>Categories</h1>
         
-        {%for cat in cat_list %}
-        
-        <h2>{{cat}}</h2>
-       
+        {%for key, cat in cat_dict.items %}
+        <a  href="{% url 'catfilter' cat=key %}">
+            <h2>{{cat}}</h2>
+        </a>
         {% endfor %}
-            
-           
-            <a  href="{% url 'catfilter' cat=silver %}">
-            <h2>{{silver}}</h2>
-            </a>
-            <a  href="{% url 'catfilter' cat=bronze %}">
-            <h2>{{bronze}}</h2>
-            </a>
-            <a  href="{% url 'catfilter' cat=gold %}">
-            <h2>{{gold}}</h2>
-            </a>
      
 {% endblock %}

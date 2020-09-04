@@ -20,6 +20,7 @@ urlpatterns = [
     #path('categories/', categories.as_view(), name='categories'),
     path("categories/", views.categories, name="categories"),
     path("categories/<int:cat>", views.catfilter, name="catfilter"),
+    path("closed-listing", views.closed, name="closed"),
 
    
    

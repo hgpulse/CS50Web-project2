@@ -17,6 +17,8 @@ from django.views.generic.edit import CreateView, SingleObjectMixin
 
 from django.db.models import Max
 
+
+
 # import os
 # from django.conf import settings
 
@@ -234,14 +236,14 @@ def addcomment(request,pk):
         #store the owner of the auction
         ListingUser = getListing.user
         
-        print(f"live: {getListing}")
+        # print(f"live: {getListing}")
         
         owner = request.POST["owner"]
         author = request.POST["author"]
         comment = request.POST["comment"]
         
         
-        print(f"live: {owner} user ID {owner} said {comment}")
+        # print(f"live: {owner} user ID {owner} said {comment}")
     
 
       
@@ -264,33 +266,33 @@ class WatchListView(ListView):
         context = super().get_context_data(**kwargs)
         return context
 
+# Python code to convert into dictionary from https://www.geeksforgeeks.org/python-convert-list-tuples-dictionary/
+def Convert(tup, di): 
+    di = dict(tup) 
+    return di 
+
 def categories(request):
-    print(Listing.CAT_TYPE[0][1])
 
-    rockstar = Listing.CAT_TYPE[0][1]
-    chef = Listing.CAT_TYPE[1][1]
-    junior = Listing.CAT_TYPE[2][1]
+    cat_tuple = Listing.CAT_TYPE
+    dictionary = {}
+    # print(str(cat_tuple))
+    
+    # conversion of list of tuple to dictionary
+    out = Convert(cat_tuple, dictionary)
 
-    cat_array = []
-    cat_array.append(rockstar)
-    cat_array.append(chef)
-    cat_array.append(junior)
-
-
-
-    gold = Listing.GOLD
-    silver = Listing.SILVER
-    bronze = Listing.BRONZE
-
-    cat_display = Listing.get_category_display
-    return render(request, "auctions/categories_list.html", {"gold": gold, "silver": silver, "bronze":bronze, "cat_list": cat_array })
+    print(out)
+    return render(request, "auctions/categories_list.html", {"cat_dict": out })
 
 def catfilter(request, cat):
-    # get all the cat
+    
     print(cat)
-    get_cat = []
-    get_cat = Listing.objects.get(category=cat)
-    print(get_cat)
-    return render(request, "auctions/cat_filter.html")
+    
+    get_cat = Listing.objects.filter(category__contains=cat)
+    # category__contains='Terry'
+    # print(get_cat)
+    return render(request, "auctions/cat_filter.html", {"cat_result": get_cat})
      
+def closed(request):
+    all_entries = Listing.objects.all()
 
+    return render(request, "auctions/closed.html", {'all_entries': all_entries} )

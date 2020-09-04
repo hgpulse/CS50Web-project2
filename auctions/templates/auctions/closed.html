@@ -1,7 +1,7 @@
 {% extends "auctions/layout.html" %}
 {% block body %}
 {% load static %}
-<h1>Active Listing</h1>
+<h1 style="color:red;" >Closed Listing</h1>
 
 
 <div class="center">
@@ -11,7 +11,10 @@
 <ul>
     
     {% for listing in all_entries %}
-        {% if listing.active == 1 %}
+        {% if listing.active == 0 %}
+        {% if listing.winner == user %}
+        Congreates {{listing.winner}} you win!
+        {% endif %}
         <a  href="{% url 'listingpage' pk=listing.id %}">
         <h2>{{ listing.name }}</h2>
         <p>by {{ listing.user }}</p>
@@ -44,7 +47,7 @@
 </ul>
     </div>
 
-  
+    
         </div>
 </div>
 {% endblock %}
