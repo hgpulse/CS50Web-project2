@@ -49,15 +49,15 @@ class Listing(models.Model):
     )
     
    
-    GOLD = 1
-    SILVER = 2
-    BRONZE = 3
+    HEALTH = 1
+    MOTOR = 2
+    FOOD = 3
     
     
     CAT_TYPE = (
-        (GOLD, _('GOLD')),
-        (SILVER, _('SILVER')),
-        (BRONZE, _('BRONZE')),
+        (HEALTH, _('HEALTH')),
+        (MOTOR, _('MOTOR')),
+        (FOOD, _('FOOD')),
         
     )
     name = models.CharField(max_length=50)
@@ -86,8 +86,8 @@ class Listing(models.Model):
     def is_upperclass(self):
         return self.category in {self.GOLD, self.SILVER, self.BRONZE }
     
-    def __str__(self):
-        return self.get_category_display()
+    # def __str__(self):
+    #     return self.get_category_display()
 
 class Bid(models.Model):
     user = models.CharField(max_length=100, blank=True, null=True)
